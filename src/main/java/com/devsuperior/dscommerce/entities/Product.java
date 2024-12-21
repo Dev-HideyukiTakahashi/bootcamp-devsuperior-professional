@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +29,9 @@ public class Product {
 
   @ManyToMany
   private Set<Category> categories = new HashSet<>();
+
+  @OneToMany(mappedBy = "id.product")
+  private Set<OrderItem> items = new HashSet<>();
 
   public Product() {
   }
@@ -81,6 +86,17 @@ public class Product {
 
   public Set<Category> getCategories() {
     return categories;
+  }
+
+  public Set<OrderItem> getItems() {
+    return items;
+  }
+
+  // recuperando orders através do order item
+  public List<Order> getOrders() {
+    return items.stream()
+        .map(x -> x.getOrder())
+        .toList();
   }
 
   @Override
