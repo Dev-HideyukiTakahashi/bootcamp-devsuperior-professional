@@ -87,6 +87,10 @@ public class User {
     this.password = password;
   }
 
+  public List<Order> getOrders() {
+    return orders;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
