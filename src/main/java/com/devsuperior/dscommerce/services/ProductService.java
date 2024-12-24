@@ -30,7 +30,7 @@ public class ProductService {
     return products.map(entity -> new ProductDTO(entity));
   }
 
-  @Transactional()
+  @Transactional
   public ProductDTO insert(ProductDTO dto) {
     Product product = new Product(dto);
     product = productRepository.save(product);
@@ -43,6 +43,11 @@ public class ProductService {
     copyDtoToEntity(dto, entity);
     entity = productRepository.save(entity);
     return new ProductDTO(entity);
+  }
+
+  @Transactional
+  public void delete(Long id) {
+    productRepository.deleteById(id);
   }
 
   private void copyDtoToEntity(ProductDTO dto, Product entity) {
