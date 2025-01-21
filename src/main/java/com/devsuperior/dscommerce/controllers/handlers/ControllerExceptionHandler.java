@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.devsuperior.dscommerce.dto.CustomError;
 import com.devsuperior.dscommerce.dto.ValidationError;
 import com.devsuperior.dscommerce.services.exceptions.DataBaseException;
+import com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +50,17 @@ public class ControllerExceptionHandler {
     String path = request.getRequestURI();
     ValidationError error = new ValidationError(timestamp, status, err, path);
     e.getFieldErrors().forEach(x -> error.addError(x.getField(), x.getDefaultMessage()));
+
+    return ResponseEntity.status(status).body(error);
+  }
+
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+    Instant timestamp = Instant.now();
+    Integer status = HttpStatus.FORBIDDEN.value();
+    String err = e.getMessage();
+    String path = request.getRequestURI();
+    CustomError error = new CustomError(timestamp, status, err, path);
 
     return ResponseEntity.status(status).body(error);
   }

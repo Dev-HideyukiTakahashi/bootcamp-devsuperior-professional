@@ -23,19 +23,23 @@ public class OrderService {
   private UserService userService;
   private ProductRepository productRepository;
   private OrderItemRepository orderItemRepository;
+  private AuthService authService;
 
   public OrderService(OrderRepository orderRepository, UserService userService, ProductRepository productRepository,
-      OrderItemRepository orderItemRepository) {
+      OrderItemRepository orderItemRepository, AuthService authService) {
     this.orderRepository = orderRepository;
     this.userService = userService;
     this.productRepository = productRepository;
     this.orderItemRepository = orderItemRepository;
+    this.authService = authService;
   }
 
   @Transactional(readOnly = true)
   public OrderDTO findById(Long id) {
     Order order = orderRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado! Id: " + id));
+
+    authService.validateSelfOrAdmin(order.getClient().getId());
     return new OrderDTO(order);
   }
 
