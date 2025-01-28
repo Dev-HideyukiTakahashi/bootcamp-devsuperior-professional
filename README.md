@@ -139,3 +139,7 @@
   - Geração de script de criação e seed da base de dados
   - Procedimento deploy com CI/CD no Heroku
   - Procedimento deploy com CI/CD no Railway
+
+---
+
+![Certificado](img/devsuperior-bootcamp-professional.jpg)
